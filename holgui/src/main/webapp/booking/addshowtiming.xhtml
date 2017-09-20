@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+<body>
+
+<ui:composition template="./../WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <h1>Add a New Movie</h1>
+        <h:form>
+            <table cellpadding="5" cellspacing="5">
+                <tr>
+                    <th align="left">Movie Id:</th>
+                    <td>
+                        <h:inputText value="#{showTimingBackingBean.movieId}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th align="left">Movie date:</th>
+                    <td>
+                        <h:inputText value="#{showTimingBackingBean.day}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th align="left">Movie Strart time:</th>
+                    <td>
+                        <h:inputText value="#{showTimingBackingBean.startTime}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th align="left">Movie End time:</th>
+                    <td>
+                        <h:inputText value="#{showTimingBackingBean.endTime}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th align="left">Movie Theater:</th>
+                    <td>
+                        <h:inputText value="#{showTimingBackingBean.theater}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th align="left">Theater Capacity:</th>
+                    <td>
+                        <h:inputText value="#{showTimingBackingBean.capacity}"/>
+                    </td>
+                </tr>
+            </table>
+            <h:commandButton value="Add" action="showtimings" actionListener="#{showTimingClientBean.addShowTiming()}"/>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+<persistence keyspace="cassandraspace" table="showtiming">
+    <keyPersistence class="com.example.holentities.entity.MovieProgram" strategy="POJO">
+        <partitionKey>
+            <field name="movieId"/>
+            <field name="day"/>
+            <field name="startTime"/>
+        </partitionKey>
+    </keyPersistence>
+    <valuePersistence class="com.example.holentities.entity.Booking"
+                      strategy="POJO">
+        <field name="hall"/>
+        <field name="endTime"/>
+        <field name="capacity" />
+    </valuePersistence>
+</persistence>

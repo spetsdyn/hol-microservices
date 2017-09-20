@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Cassandra connection settings -->
+    <import resource="classpath:com/unknown/cassandra/connection-settings.xml"/>
+
+    <!-- Persistence settings for 'cache1' -->
+    <bean id="cache1_persistence_settings" class="org.apache.ignite.cache.store.cassandra.persistence.KeyValuePersistenceSettings">
+        <constructor-arg type="org.springframework.core.io.Resource"
+                         value="classpath:com/unknown/cache/persistence-settings-movie.xml"/>
+    </bean>
+
+    <!-- Ignite configuration -->
+    <bean id="ignite.cfg" class="org.apache.ignite.configuration.IgniteConfiguration">
+        <property name="gridName" value="myGrid"/>
+        <property name="metricsLogFrequency" value="0"/>
+        <property name="cacheConfiguration">
+            <list>
+                <!-- Configuring persistence for "cache1" cache -->
+                <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                    <property name="name" value="Moviecache"/>
+                    <property name="cacheMode" value="REPLICATED"/>
+                    <property name="readThrough" value="true"/>
+                    <property name="writeThrough" value="true"/>
+                    <property name="cacheStoreFactory">
+                        <bean class="org.apache.ignite.cache.store.cassandra.CassandraCacheStoreFactory">
+                            <property name="dataSourceBean" value="cassandraAdminDataSource"/>
+                            <property name="persistenceSettingsBean" value="cache1_persistence_settings"/>
+                        </bean>
+                    </property>
+                    <property name="indexedTypes">
+                        <list>
+                            <value>java.lang.Integer</value>
+                            <value>com.example.holentities.entity.Movie</value>
+                        </list>
+                    </property>
+                </bean>
+
+            </list>
+        </property>
+        
+        <property name="discoverySpi">
+            <bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
+                <property name="ipFinder">
+                    <bean class="org.apache.ignite.spi.discovery.tcp.ipfinder.multicast.TcpDiscoveryMulticastIpFinder">
+                        <property name="multicastGroup" value="228.10.10.157"/>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+            
+    </bean>
+</beans>

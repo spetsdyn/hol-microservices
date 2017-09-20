@@ -1,0 +1,9 @@
+<persistence keyspace="cassandraspace" table="movie">
+    <keyPersistence class="java.lang.Integer" strategy="PRIMITIVE" />
+    <valuePersistence class="com.example.holentities.entity.Movie"
+                      strategy="POJO">
+        <field name="id"/>
+        <field name="name"/>
+        <field name="actors" />
+    </valuePersistence>
+</persistence>
