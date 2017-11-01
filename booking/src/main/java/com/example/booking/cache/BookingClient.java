@@ -2,7 +2,8 @@ package com.example.booking.cache;
 
 import com.example.holentities.entity.Booking;
 import com.example.holentities.entity.MovieProgram;
-import com.unknown.cache.client.AbstractIgniteClient;
+import org.apache.ignite.IgniteCache;
+import org.apache.ignite.Ignition;
 import org.apache.ignite.cache.query.QueryCursor;
 import org.apache.ignite.cache.query.ScanQuery;
 import org.apache.ignite.cache.query.SqlFieldsQuery;
@@ -14,10 +15,24 @@ import java.util.stream.Collectors;
 /**
  * Created by spetsiotis on 2/28/17.
  */
-public class BookingClient extends AbstractIgniteClient<MovieProgram, Booking> {
-    @Override
+public class BookingClient {
     protected Class getCachedObjectClass() {
         return Booking.class;
+    }
+
+    public void put(MovieProgram key, Booking value) {
+
+        getCache().put(key, value);
+
+    }
+
+    public IgniteCache getCache() {
+        String cacheName = getCachedObjectClass().getSimpleName() + "cache";
+        return getCache(cacheName);
+    }
+
+    protected IgniteCache getCache(String cacheName) {
+        return Ignition.ignite("myGrid1").cache(cacheName);
     }
 
     public List<?> getAll() {

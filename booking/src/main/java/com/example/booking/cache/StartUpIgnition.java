@@ -1,24 +1,40 @@
 package com.example.booking.cache;
 
-import com.unknown.cache.startup.AbstractStartUpIgnition;
+import org.apache.ignite.Ignite;
+import org.apache.ignite.Ignition;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import java.util.logging.Logger;
 
 /**
  * Created by spetsiotis on 2/21/17.
  */
 @Singleton
 @Startup
-public class StartUpIgnition extends AbstractStartUpIgnition {
+public class StartUpIgnition {
 
-    @Override
-    protected String getConfigLocation() {
-        return "com/unknown/cache/ignite-config.xml";
+    private static final Logger logger = Logger.getLogger(StartUpIgnition.class.getName());
+    private Ignite ignite;
+
+
+    @PostConstruct
+    public void setUp() {
+        intializeCache();
+        logger.info("Ignite cache initialized!!!");
     }
 
-    @Override
-    protected boolean loadCacheOnStartup() {
-        return true;
+    @PreDestroy
+    public void preDestroy() {
+        ignite.destroyCache("");
+    }
+
+    private void intializeCache() {
+        logger.info("Initiliazing ignite cache!!!");
+        ignite = Ignition.start("com/example/cache/ignite-config.xml");
+        ignite.getOrCreateCache("cassandraspace.showtiming");
+
     }
 }

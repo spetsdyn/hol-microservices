@@ -4,12 +4,12 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!-- Cassandra connection settings -->
-    <import resource="classpath:com/unknown/cassandra/connection-settings.xml"/>
+    <import resource="classpath:com/example/cassandra/connection-settings.xml"/>
 
     <!-- Persistence settings for 'cache1' -->
     <bean id="cache1_persistence_settings" class="org.apache.ignite.cache.store.cassandra.persistence.KeyValuePersistenceSettings">
         <constructor-arg type="org.springframework.core.io.Resource"
-                         value="classpath:com/unknown/cache/persistence-settings-showtiming.xml"/>
+                         value="classpath:com/example/cache/persistence-settings-showtiming.xml"/>
     </bean>
 
     <!-- Ignite configuration -->
@@ -41,13 +41,9 @@
             </list>
         </property>
 
-         <property name="discoverySpi">
-            <bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
-                <property name="ipFinder">
-                    <bean class="org.apache.ignite.spi.discovery.tcp.ipfinder.multicast.TcpDiscoveryMulticastIpFinder">
-                        <property name="multicastGroup" value="228.1.2.4"/>
-                    </bean>
-                </property>
+        <property name="communicationSpi">
+            <bean class="org.apache.ignite.spi.communication.tcp.TcpCommunicationSpi">
+                <property name="localPort" value="48100"/>
             </bean>
         </property>
 
